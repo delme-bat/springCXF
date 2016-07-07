@@ -1,2 +1,2 @@
 # springCXF
-springMVC + CXF + SSL 
+springMVC + CXF(server) + HTTPS + maven
