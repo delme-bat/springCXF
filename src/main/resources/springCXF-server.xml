@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:jaxws="http://cxf.apache.org/jaxws" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:cxf="http://cxf.apache.org/core" xmlns:wsa="http://cxf.apache.org/ws/addressing"
+	xmlns:http-conf="http://cxf.apache.org/transports/http/configuration"
+	xmlns:jaxrs="http://cxf.apache.org/jaxrs" xmlns:sec="http://cxf.apache.org/configuration/security"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans  
+    http://www.springframework.org/schema/beans/spring-beans.xsd  
+    http://www.springframework.org/schema/context  
+    http://www.springframework.org/schema/context/spring-context.xsd  
+    http://cxf.apache.org/core 
+    http://cxf.apache.org/schemas/core.xsd  
+    http://cxf.apache.org/jaxws   
+    http://cxf.apache.org/schemas/jaxws.xsd
+    http://cxf.apache.org/jaxrs
+    http://cxf.apache.org/schemas/jaxrs.xsd
+    http://cxf.apache.org/configuration/security
+    http://cxf.apache.org/schemas/configuration/security.xsd
+   	http://cxf.apache.org/transports/http/configuration 
+   	http://cxf.apache.org/schemas/configuration/http-conf.xsd">
+
+	<!-- JSON PROVIDER -->
+	<bean id="jacksonJsonProvider" class="org.codehaus.jackson.jaxrs.JacksonJsonProvider" />
+
+	<!-- HelloService server start -->
+	<bean id="helloServiceBean" class="com.bush76.core.ws.server.impl.HelloServiceImpl" />
+
+	<jaxws:server id="helloService" serviceClass="com.bush76.core.ws.server.IHelloService"
+		address="/hello">
+		<jaxws:serviceBean>
+			<ref bean="helloServiceBean" />
+		</jaxws:serviceBean>
+	</jaxws:server>
+	<!-- HelloService server end -->
+
+	<!--userService server start -->
+	<bean id="userServiceBean" class="com.bush76.core.ws.server.impl.UserServiceImpl" />
+
+	<jaxrs:server id="userService" address="/user">
+		<jaxrs:serviceBeans>
+			<ref bean="userServiceBean" />
+		</jaxrs:serviceBeans>
+		<jaxrs:extensionMappings>
+			<entry key="json" value="application/json" />
+			<entry key="xml" value="application/xml" />
+		</jaxrs:extensionMappings>
+		<jaxrs:providers>
+			<ref bean="jacksonJsonProvider"/>
+		</jaxrs:providers>
+	</jaxrs:server>
+	<!-- userService server end -->
+	
+</beans>
